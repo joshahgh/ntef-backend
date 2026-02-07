@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      String   @default("APPLICANT") // "APPLICANT" or "ADMIN"
+  createdAt DateTime @default(now())
+
+  application Application?
+  payments     Payment[]
+}
+
+model Application {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  status      String   @default("DRAFT") // "DRAFT" | "UNDER_REVIEW" | "APPROVED" | "REJECTED"
+  submittedAt DateTime?
+
+  fullName    String?
+  institution String?
+  essay       String?
+
+  user        User @relation(fields: [userId], references: [id])
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  userId    String
+  reference String   @unique
+  amount    Int
+  status    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
