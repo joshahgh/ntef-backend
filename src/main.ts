@@ -7,12 +7,13 @@ async function bootstrap() {
   app.enableCors({
   origin: [
     "http://localhost:3000",
-    "https://ntef-frontend-xxxx.vercel.app"
+    "https://ntef-frontend.vercel.app",
   ],
   methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 });
+
 
 
   const port = process.env.PORT || 4000;
